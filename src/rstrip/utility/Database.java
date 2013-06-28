@@ -1,6 +1,7 @@
 package rstrip.utility;
 
 /*
+ * based on code from site
  * http://balakhonov-yuriy.ru/java-mysql/
  */
 

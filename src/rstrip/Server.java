@@ -51,11 +51,11 @@ public class Server implements HttpHandler {
             System.out.println("server stoped");
             database.disconnect();
     	} catch (ClassNotFoundException e) {
-			System.out.println("ERROR 01: "+ e.getMessage());
+			System.out.println("ERROR 01: ClassNotFoundException - "+ e.getMessage());
 		} catch (SQLException  e) {
-			System.out.println("ERROR 02: "+ e.getMessage());
+			System.out.println("ERROR 02: SQLException - "+ e.getMessage());
 		} catch (IOException e) {
-			System.out.println("ERROR 03: "+ e.getMessage());
+			System.out.println("ERROR 03: IOException - "+ e.getMessage());
 		}
     }
 
@@ -114,7 +114,7 @@ public class Server implements HttpHandler {
             out.close();
             exc.close();
 		} catch (IOException e) {
-			System.out.println("ERROR 05: "+ e.getMessage());
+			System.out.println("ERROR 05: IOException - "+ e.getMessage());
 			try {
 				database.disconnect();
 			} catch (SQLException e1) {
