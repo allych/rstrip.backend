@@ -19,6 +19,15 @@ import rstrip.actions.poi.AddPOIAction;
 import rstrip.actions.poi.DeletePOIAction;
 import rstrip.actions.poi.EditPOIAction;
 import rstrip.actions.poi.GetPOIAction;
+import rstrip.actions.poi.LoadImagePOIAction;
+import rstrip.actions.route.AddRouteAction;
+import rstrip.actions.route.DeleteRouteAction;
+import rstrip.actions.route.EditRouteAction;
+import rstrip.actions.route.GetRouteAction;
+import rstrip.actions.step.AddStepAction;
+import rstrip.actions.step.DeleteStepAction;
+import rstrip.actions.step.EditStepAction;
+import rstrip.actions.step.GetStepAction;
 import rstrip.utility.Database;
 import rstrip.utility.ParameterFilter;
 import rstrip.utility.Settings;
@@ -76,6 +85,7 @@ public class Server implements HttpHandler {
                 Action action = null;
                 
                 if (nameAction != null){
+                	// POI
 	                if (nameAction.equals("add-poi")){
 	                    action = new AddPOIAction(parameters);
 	                }
@@ -87,6 +97,35 @@ public class Server implements HttpHandler {
 	                }
 	                else if (nameAction.equals("get-poi")){
 	                	action = new GetPOIAction(parameters);
+	                }
+	                else if (nameAction.equals("load-image-poi")){
+	                	action = new LoadImagePOIAction(parameters);
+	                }
+	                // STEP
+	                else if (nameAction.equals("add-step")){
+	                    action = new AddStepAction(parameters);
+	                }
+	                else if (nameAction.equals("edit-step")){
+	                    action = new EditStepAction(parameters);
+	                }
+	                else if (nameAction.equals("delete-step")){
+	                	action = new DeleteStepAction(parameters);
+	                }
+	                else if (nameAction.equals("get-step")){
+	                	action = new GetStepAction(parameters);
+	                }
+	                // ROUTE
+	                else if (nameAction.equals("add-route")){
+	                    action = new AddRouteAction(parameters);
+	                }
+	                else if (nameAction.equals("edit-route")){
+	                    action = new EditRouteAction(parameters);
+	                }
+	                else if (nameAction.equals("delete-route")){
+	                	action = new DeleteRouteAction(parameters);
+	                }
+	                else if (nameAction.equals("get-route")){
+	                	action = new GetRouteAction(parameters);
 	                }
                 }
 

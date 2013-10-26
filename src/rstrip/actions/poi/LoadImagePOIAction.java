@@ -1,5 +1,7 @@
 package rstrip.actions.poi;
 
+/* http://www.sources.ru/java/faq/loadfiles.htm */
+
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -7,15 +9,15 @@ import rstrip.Server;
 import rstrip.actions.Action;
 import rstrip.utility.Control;
 
-public class DeletePOIAction extends Action {
+public class LoadImagePOIAction extends Action {
 
-	protected DeletePOIResult result;
+	protected LoadImagePOIResult result;
 	
 	private Integer id;
 
-	public DeletePOIAction(Map parameters) {
+	public LoadImagePOIAction(Map parameters) {
 		super(parameters);
-		this.result = new DeletePOIResult();
+		this.result = new LoadImagePOIResult();
 	}
 	
 	protected void validateParameters(){
@@ -33,17 +35,9 @@ public class DeletePOIAction extends Action {
 	}
 	
 	public void execute() throws SQLException {
-		Server.database.startTransaction();
-		
-		Server.database.exec("DELETE FROM poi_localized WHERE `id_poi`='" + this.id + "'");
-		Server.database.exec("DELETE FROM poi WHERE `id`='" + this.id + "'");
-		
-		this.result.poi.setId(this.id);
-
-		Server.database.endTransaction();
 	}
 	
-	public DeletePOIResult getResult() {
+	public LoadImagePOIResult getResult() {
 		return this.result;
 	}
 	

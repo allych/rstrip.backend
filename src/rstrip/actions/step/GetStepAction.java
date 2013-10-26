@@ -1,4 +1,4 @@
-package rstrip.actions.poi;
+package rstrip.actions.step;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,19 +6,19 @@ import java.util.Map;
 
 import rstrip.Server;
 import rstrip.actions.Action;
-import rstrip.objects.POI;
+import rstrip.objects.Step;
 import rstrip.utility.Control;
 
-public class GetPOIAction extends Action {
+public class GetStepAction extends Action {
 
-	protected GetPOIResult result;
+	protected GetStepResult result;
 	
 	private Float latitude, longitude;
 	private Integer zoom, width, height, id;
 	
-	public GetPOIAction(Map parameters) {
+	public GetStepAction(Map parameters) {
 		super(parameters);
-		this.result = new GetPOIResult();
+		this.result = new GetStepResult();
 	}
 	
 	protected void validateParameters(){
@@ -77,45 +77,32 @@ public class GetPOIAction extends Action {
 	}
 	
 	public void execute() throws SQLException {
-		String query = "SELECT `p`.`id`, `p`.`latitude`, `p`.`longitude`, `p`.`creation_date`," +
-				"`p`.`update_date`, `p`.`img`, `p`.`have_excursions`, `p`.`visit_time`, `pl`.`name`," +
-				"`pl`.`description`, `pl`.`motivation`, `pl`.`schedule`, `pl`.`price`, `pl`.`features`," +
-				"`pl`.`parking`, `pl`.`food`, `pl`.`website` FROM `poi` `p`" +
-				"INNER JOIN `poi_localized` `pl` ON `p`.`id` = `pl`.`id_poi`" +
-				"WHERE `p`.`id_user` = '1' AND `pl`.`id_language` = '1'";
+		String query = "SELECT `s`.`id`, `s`.`latitude`, `s`.`longitude`, `s`.`creation_date`, " +
+				"`s`.`update_date`, `s`.`name`, `s`.`type` FROM `step` `s`" +
+				"WHERE `s`.`id_user` = '1'";
 
 		if (this.id != null) {
-			query += " AND `p`.`id` = '" + this.id + "'";
+			query += " AND `s`.`id` = '" + this.id + "'";
 		}
 		
 		ResultSet rows = Server.database.query(query);
 		
 		while (rows.next()) {
-			POI poi = new POI();
+			Step step = new Step();
 
-			poi.setId(rows.getInt("id"));
-			poi.setLatitude(rows.getFloat("latitude"));
-			poi.setLongitude(rows.getFloat("longitude"));
-			poi.setCreationDate(rows.getString("creation_date"));
-			poi.setUpdateDate(rows.getString("update_date"));
-			poi.setImg(rows.getString("img"));
-			poi.setHaveExcursions(rows.getBoolean("have_excursions"));
-			poi.setVisitTime(rows.getInt("visit_time"));
-			poi.setName(rows.getString("name"));
-			poi.setDescription(rows.getString("description"));
-			poi.setMotivation(rows.getString("motivation"));
-			poi.setSchedule(rows.getString("schedule"));
-			poi.setPrice(rows.getString("price"));
-			poi.setFeatures(rows.getString("features"));
-			poi.setParking(rows.getString("parking"));
-			poi.setFood(rows.getString("food"));
-			poi.setWebsite(rows.getString("website"));
+			step.setId(rows.getInt("id"));
+			step.setLatitude(rows.getFloat("latitude"));
+			step.setLongitude(rows.getFloat("longitude"));
+			step.setCreationDate(rows.getString("creation_date"));
+			step.setUpdateDate(rows.getString("update_date"));
+			step.setName(rows.getString("name"));
+			step.setType(rows.getString("type"));
 			
-			this.result.addPOI(poi);
+			this.result.addStep(step);
 		}
 	}
 
-	public GetPOIResult getResult() {
+	public GetStepResult getResult() {
 		return this.result;
 	}
 	

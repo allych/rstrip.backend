@@ -10,7 +10,7 @@ public class POI {
 	private String update_date;
 	private String img;
 	private Boolean have_excursions;
-	private String visit_time;
+	private Integer visit_time;
 	private String name;
 	private String description;
 	private String motivation;
@@ -80,11 +80,11 @@ public class POI {
 		this.have_excursions = have_excursions;
 	}
 
-	public String getVisitTime() {
+	public Integer getVisitTime() {
 		return visit_time;
 	}
 
-	public void setVisitTime(String visit_time) {
+	public void setVisitTime(Integer visit_time) {
 		this.visit_time = visit_time;
 	}
 

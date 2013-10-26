@@ -1,4 +1,4 @@
-package rstrip.actions.poi;
+package rstrip.actions.step;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,26 +8,30 @@ import rstrip.Server;
 import rstrip.actions.Action;
 import rstrip.utility.Control;
 
-public class AddPOIAction extends Action {
+public class AddStepAction extends Action {
 
-	protected AddPOIResult result;
+	protected AddStepResult result;
 	
-	private String name, description;
+	private String name, type;
 	private Float latitude, longitude;
 
-	public AddPOIAction(Map parameters) {
+	public AddStepAction(Map parameters) {
 		super(parameters);
-		this.result = new AddPOIResult();
+		this.result = new AddStepResult();
 	}
 	
 	protected void validateParameters(){
 		this.name = (parameters.get("name") != null) ? parameters.get("name").toString() : null;
-		this.description = (parameters.get("description") != null) ? parameters.get("description").toString() : "";
+		this.type = (parameters.get("type") != null) ? parameters.get("type").toString() : null;
 		this.latitude = (parameters.get("latitude") != null) ? Float.parseFloat(parameters.get("latitude").toString()) : null;
 		this.longitude = (parameters.get("longitude") != null) ? Float.parseFloat(parameters.get("longitude").toString()) : null;
 		
 		if (this.name == null){
 			error = "ERROR 302 :: PARAMETER IS NOT PASSED (name)";
+			return;
+		}
+		else if (this.type == null){
+			error = "ERROR 302 :: PARAMETER IS NOT PASSED (type)";
 			return;
 		}
 		else if (this.latitude == null){
@@ -43,6 +47,10 @@ public class AddPOIAction extends Action {
 			error = "ERROR 40 :: NOT VALID PARAMETER (name)";
 			return;
 		}
+		else if (this.type.equals("") || !Control.isStepType(this.type)){
+			error = "ERROR 40 :: NOT VALID PARAMETER (type)";
+			return;
+		}
 		else if (!Control.isUnsignedFloat(this.latitude)){
 			error = "ERROR 40 :: NOT VALID PARAMETER (latitude)";
 			return;
@@ -51,34 +59,18 @@ public class AddPOIAction extends Action {
 			error = "ERROR 40 :: NOT VALID PARAMETER (longitude)";
 			return;
 		}
-		else if (this.description != null && !Control.isText(this.description)){
-			error = "ERROR 40 :: NOT VALID PARAMETER (description)";
-			return;
-		}
 		
 	}
 	
 	public void execute() throws SQLException {
 		Server.database.startTransaction();
 		
-		ResultSet rows = Server.database.exec("INSERT INTO poi SET `id_user`=1, `latitude`='" + 
-				this.latitude + "', `longitude`='" + this.longitude + "'", "id");
+		ResultSet rows = Server.database.exec("INSERT INTO step SET `id_user`=1, `latitude`='" + 
+				this.latitude + "', `longitude`='" + this.longitude + "', " +
+				"`name`='" + this.name + "', `type`='" + this.type + "'", "id");
 		
 		if (rows.next()) {
-			String query = "INSERT INTO poi_localized SET `name`='" + 
-					this.name + "', `id_poi`='" + rows.getInt(1) + "', `id_language`=1";
-			if (this.description != null){
-				query += ", `description`='" + this.description + "'";
-			}
-			
-			ResultSet row = Server.database.exec(query, "id");
-			if (!row.next()){
-				this.error = "ERROR 501 :: EXECUTION ERROR";
-				Server.database.rollback();
-				return;
-			}
-			
-			this.result.poi.setId(rows.getInt(1));
+			this.result.step.setId(rows.getInt(1));
 		}
 		else {
 			this.error = "ERROR 501 :: EXECUTION ERROR";
@@ -89,7 +81,7 @@ public class AddPOIAction extends Action {
 		Server.database.endTransaction();
 	}
 	
-	public AddPOIResult getResult() {
+	public AddStepResult getResult() {
 		return this.result;
 	}
 	

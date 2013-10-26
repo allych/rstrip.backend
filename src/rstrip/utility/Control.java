@@ -20,7 +20,17 @@ public class Control {
 		return true;
 	}
 	
+	public static Boolean isStepType(String value) {
+		if (value.equals("start") || value.equals("finish") || value.equals("hotel"))
+			return true;
+		return false;
+	}
+	
 	public static Boolean isText(String value) {
+		return true;
+	}
+	
+	public static Boolean isDateTime(String value) {
 		return true;
 	}
 	

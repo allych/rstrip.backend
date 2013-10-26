@@ -14,7 +14,7 @@ public class EditPOIAction extends Action {
 	private Integer id;
 	private String img;
 	private Boolean have_excursions;
-	private String visit_time;
+	private Integer visit_time;
 	private String name;
 	private String description;
 	private String motivation;
@@ -31,21 +31,21 @@ public class EditPOIAction extends Action {
 	}
 	
 	protected void validateParameters(){
-		this.id = Integer.parseInt(parameters.get("id").toString());
-		this.img = (parameters.get("img") != null) ? parameters.get("img").toString() : null;
+		this.id = (parameters.get("id") != null) ? Integer.parseInt(parameters.get("id").toString()) : null;
+		this.img = (parameters.get("img") != null) ? parameters.get("img").toString() : "";
 		if (parameters.get("have_excursions") != null) {
 			this.have_excursions = parameters.get("have_excursions").toString().equals("1") ? true : false;
 		}
-		this.visit_time = (parameters.get("visit_time") != null) ? parameters.get("visit_time").toString() : null;
+		this.visit_time = (parameters.get("visit_time") != null) ? Integer.parseInt(parameters.get("visit_time").toString()) : null;
 		this.name = (parameters.get("name") != null) ? parameters.get("name").toString() : null;
-		this.description = (parameters.get("description") != null) ? parameters.get("description").toString() : null;
-		this.motivation = (parameters.get("motivation") != null) ? parameters.get("motivation").toString() : null;
-		this.schedule = (parameters.get("schedule") != null) ? parameters.get("schedule").toString() : null;
-		this.price = (parameters.get("price") != null) ? parameters.get("price").toString() : null;
-		this.features = (parameters.get("features") != null) ? parameters.get("features").toString() : null;
-		this.parking = (parameters.get("parking") != null) ? parameters.get("parking").toString() : null;
-		this.food = (parameters.get("food") != null) ? parameters.get("food").toString() : null;
-		this.website = (parameters.get("website") != null) ? parameters.get("website").toString() : null;
+		this.description = (parameters.get("description") != null) ? parameters.get("description").toString() : "";
+		this.motivation = (parameters.get("motivation") != null) ? parameters.get("motivation").toString() : "";
+		this.schedule = (parameters.get("schedule") != null) ? parameters.get("schedule").toString() : "";
+		this.price = (parameters.get("price") != null) ? parameters.get("price").toString() : "";
+		this.features = (parameters.get("features") != null) ? parameters.get("features").toString() : "";
+		this.parking = (parameters.get("parking") != null) ? parameters.get("parking").toString() : "";
+		this.food = (parameters.get("food") != null) ? parameters.get("food").toString() : "";
+		this.website = (parameters.get("website") != null) ? parameters.get("website").toString() : "";
 		
 		if (this.id == null){
 			error = "ERROR 302 :: PARAMETER IS NOT PASSED (id)";
@@ -60,11 +60,11 @@ public class EditPOIAction extends Action {
 			error = "ERROR 40 :: NOT VALID PARAMETER (img)";
 			return;
 		}
-		else if (this.visit_time != null && !Control.isString(this.visit_time)) {
+		else if (this.visit_time != null && !Control.isUnsignedInteger(this.visit_time)) {
 			error = "ERROR 40 :: NOT VALID PARAMETER (visit_time)";
 			return;
 		}
-		else if (this.name != null && !Control.isString(this.name)) {
+		else if (this.name != null && (!Control.isString(this.name) || this.name.equals(""))) {
 			error = "ERROR 40 :: NOT VALID PARAMETER (name)";
 			return;
 		}

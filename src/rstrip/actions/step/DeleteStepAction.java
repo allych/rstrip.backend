@@ -1,4 +1,4 @@
-package rstrip.actions.poi;
+package rstrip.actions.step;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -7,15 +7,15 @@ import rstrip.Server;
 import rstrip.actions.Action;
 import rstrip.utility.Control;
 
-public class DeletePOIAction extends Action {
+public class DeleteStepAction extends Action {
 
-	protected DeletePOIResult result;
+	protected DeleteStepResult result;
 	
 	private Integer id;
 
-	public DeletePOIAction(Map parameters) {
+	public DeleteStepAction(Map parameters) {
 		super(parameters);
-		this.result = new DeletePOIResult();
+		this.result = new DeleteStepResult();
 	}
 	
 	protected void validateParameters(){
@@ -35,15 +35,14 @@ public class DeletePOIAction extends Action {
 	public void execute() throws SQLException {
 		Server.database.startTransaction();
 		
-		Server.database.exec("DELETE FROM poi_localized WHERE `id_poi`='" + this.id + "'");
-		Server.database.exec("DELETE FROM poi WHERE `id`='" + this.id + "'");
+		Server.database.exec("DELETE FROM step WHERE `id`='" + this.id + "'");
 		
-		this.result.poi.setId(this.id);
+		this.result.step.setId(this.id);
 
 		Server.database.endTransaction();
 	}
 	
-	public DeletePOIResult getResult() {
+	public DeleteStepResult getResult() {
 		return this.result;
 	}
 	
